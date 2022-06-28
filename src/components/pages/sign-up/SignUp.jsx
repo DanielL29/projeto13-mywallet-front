@@ -16,6 +16,7 @@ export default function SignUp() {
 
     async function signUp(e) {
         e.preventDefault()
+        setErrors([])
 
         try {
             setLoading(true)
@@ -25,12 +26,13 @@ export default function SignUp() {
             setLoading(false)
             navigate('/')
         } catch(err) {
-            console.log(err.response.data)
-            const errorsMessages = err.response.data.details.map(error => error.message)
-            alert(errorsMessages)
-
-            setErrors(err.response.data.details)
-            setLoading(false)
+            if(err.response.data.details) {
+                setErrors(err.response.data.details)
+                setLoading(false)
+            } else {
+                alert(err.response.data)
+                setLoading(false)
+            }
         }
     }
 
