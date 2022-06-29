@@ -8,7 +8,7 @@ import { NewRecordWrapper } from './NewRecordStyle'
 import { Bars } from 'react-loader-spinner';
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import { config } from '../../../functions/auth'
+import { config } from '../../../mock/data'
 
 export default function NewRecord() {
     const [type, setType] = useState('')
@@ -49,7 +49,6 @@ export default function NewRecord() {
             setLoading(false)
             toast.success(type === 'entry' ? 'Nova entrada registrada!' : 'Nova saida registrada!', {
                 autoClose: 1500,
-                hideProgressBar: true,
                 pauseOnHover: false,
                 theme: 'colored'
             })

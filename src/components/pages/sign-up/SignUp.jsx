@@ -5,6 +5,7 @@ import Button from '../../templates/button/Button';
 import { Bars } from 'react-loader-spinner'
 import { useState } from 'react';
 import axios from 'axios'
+import { BASE_URL } from '../../../mock/data';
 
 export default function SignUp() {
     const [user, setUser] = useState({ name: '', email: '', password: '', confirmPassword: '' })
@@ -21,7 +22,7 @@ export default function SignUp() {
         try {
             setLoading(true)
 
-            await axios.post('http://localhost:5000/sign-up', user)
+            await axios.post(`${BASE_URL}/sign-up`, user)
             
             setLoading(false)
             navigate('/')

@@ -6,6 +6,7 @@ import { Bars } from 'react-loader-spinner';
 import { useContext, useState } from "react";
 import axios from 'axios'
 import UserContext from "../../../contexts/UserContext";
+import { BASE_URL } from "../../../mock/data";
 
 export default function SignIn() {
     const [user, setUser] = useState({ email: '', password: '' })
@@ -23,7 +24,7 @@ export default function SignIn() {
         try {
             setLoading(true)
 
-            const userData = await axios.post('http://localhost:5000/sign-in', user)
+            const userData = await axios.post(`${BASE_URL}/sign-in`, user)
             localStorage.setItem('currentUser', JSON.stringify(userData.data))
             
             setCurrentUser(userData.data)

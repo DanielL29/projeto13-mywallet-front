@@ -1,22 +1,11 @@
-import { HomeWrapper, RecordsWrapper, NewRecordButtons, RecordWrapper } from "./HomeStyle";
-import remove from '../../../assets/images/remove.svg'
+import { HomeWrapper, RecordsWrapper, NewRecordButtons } from "./HomeStyle";
+import remove from '../../../assets/images/remove.svg';
 import { useContext, useEffect, useState } from "react";
-import axios from 'axios'
-import UserContext from '../../../contexts/UserContext'
+import axios from 'axios';
+import UserContext from '../../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { config } from "../../../functions/auth";
-
-function Record({ date, description, price, isIncrease }) {
-    const priceFormatted = Number(price).toFixed(2).toString().replace('-', '').replace('.', ',')
-
-    return (
-        <RecordWrapper>
-            <span>{date}</span>
-            <p>{description}</p>
-            <h2 className={isIncrease ? 'green' : 'red'}>{priceFormatted}</h2>
-        </RecordWrapper>
-    )
-}
+import { BASE_URL, config } from "../../../mock/data";
+import Record from './Record'
 
 export default function Home() {
     const [records, setRecords] = useState([])
@@ -26,24 +15,14 @@ export default function Home() {
 
     useEffect(() => {
         getRecords()
-        getUserBalance()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     async function getRecords() {
         try {
-            const recordsData = await axios.get('http://localhost:5000/records', config(currentUser))
-            setRecords(recordsData.data)
-        } catch (err) {
-            if (err.response.data) alert(err.response.data)
-            else alert(err.message)
-        }
-    }
-
-    async function getUserBalance() {
-        try {
-            const balanceData = await axios.get('http://localhost:5000/user-balance', config(currentUser))
-            setBalance(balanceData.data.balance)
+            const recordsData = await axios.get(`${BASE_URL}/records`, config(currentUser))
+            setRecords(recordsData.data.records)
+            setBalance(recordsData.data.balance.sum)
         } catch (err) {
             if (err.response.data) alert(err.response.data)
             else alert(err.message)
@@ -68,12 +47,14 @@ export default function Home() {
                 {records.length > 0 ? (
                     <>
                         <div className="records">
-                            {records.map(record =>
+                            {records.map((record, i) =>
                                 <Record key={record._id}
+                                    id={record._id}
                                     date={record.date}
                                     description={record.description}
                                     price={record.price}
                                     isIncrease={record.isIncrease}
+                                    getRecords={getRecords}
                                 />
                             )}
                         </div>

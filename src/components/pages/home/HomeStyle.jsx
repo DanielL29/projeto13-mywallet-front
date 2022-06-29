@@ -154,4 +154,19 @@ export const RecordWrapper = styled.div`
         word-wrap: break-word;
         margin-right: 5px;
     }
+    
+    h2 {
+        margin-right: 10px;
+    }
+
+    ion-icon {
+        color: #C6C6C6;
+        font-size: 17px;
+        transition: all 200ms ease-in-out;
+    }
+
+    ion-icon:hover {
+        transform: scale(1.3);
+        filter: brightness(0.8);
+    }
 `

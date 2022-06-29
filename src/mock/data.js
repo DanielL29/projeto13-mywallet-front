@@ -1,3 +1,5 @@
+const BASE_URL = 'http://localhost:5000'
+
 const config = (user) => {
     return {
         headers: {
@@ -6,4 +8,4 @@ const config = (user) => {
     }
 }
 
-export { config }
+export { BASE_URL, config }
