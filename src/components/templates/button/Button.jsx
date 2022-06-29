@@ -1,8 +1,8 @@
 import { ButtonWrapper } from "./ButtonStyle";
 
-export default function Button({ text, onClick, loading }) {
+export default function Button({ text, disabled }) {
     return (
-        <ButtonWrapper type="submit" onClick={() => onClick} disabled={loading}>
+        <ButtonWrapper type="submit" disabled={disabled}>
             {text}
         </ButtonWrapper>
     )

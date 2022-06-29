@@ -50,5 +50,13 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Raleway', sans-serif;
         font-weight: 400;
     }
+
+    .red {
+        color: #C70000;
+    }
+
+    .green {
+        color: #03AC00;
+    }
 `
 

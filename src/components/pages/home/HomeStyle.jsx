@@ -64,6 +64,26 @@ export const RecordsWrapper = styled.div`
     padding-bottom: 10px;
     box-sizing: border-box;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .records {
+        flex: 1;
+    }
+
+    .balance {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #000;
+    }
 `
 
 export const NewRecordButtons = styled.div`
@@ -133,13 +153,5 @@ export const RecordWrapper = styled.div`
         flex: 1;
         word-wrap: break-word;
         margin-right: 5px;
-    }
-
-    .red {
-        color: #C70000;
-    }
-
-    .green {
-        color: #03AC00;
     }
 `

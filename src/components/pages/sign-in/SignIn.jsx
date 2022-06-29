@@ -33,8 +33,11 @@ export default function SignIn() {
             if(err.response.data.details) {
                 setErrors(err.response.data.details)
                 setLoading(false)
+            } else if(err.response.data) {
+                 alert(err.response.data)
+                 setLoading(false)
             } else {
-                alert(err.response.data)
+                alert(err.message)
                 setLoading(false)
             }
         }
