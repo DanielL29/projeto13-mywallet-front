@@ -49,18 +49,18 @@ export default function SignUp() {
             <h1>MyWallet</h1>
             <form onSubmit={signUp}>
                 <Input type="text" text="Nome" name="name" 
-                    onChange={(e) => changingUser(e)} disabled={loading} />
+                    onChange={(e) => changingUser(e)} disabled={loading === true} />
                 {errors.length > 0 ? findError('name') : ''}
                 <Input type="email" text="E-mail" name="email" 
-                    onChange={(e) => changingUser(e)} disabled={loading} />
+                    onChange={(e) => changingUser(e)} disabled={loading === true} />
                 {errors.length > 0 ? findError('email') : ''}
                 <Input type="password" text="Senha" name="password" 
-                    onChange={(e) => changingUser(e)} disabled={loading} />
+                    onChange={(e) => changingUser(e)} disabled={loading === true} />
                 {errors.length > 0 ? findError('password') : ''}
                 <Input type="password" text="Confirme a senha" name="confirmPassword" 
-                    onChange={(e) => changingUser(e)} disabled={loading} /> 
+                    onChange={(e) => changingUser(e)} disabled={loading === true} /> 
                 {errors.length > 0 ? findError('confirmPassword') : ''}
-                <Button disabled={loading} text={loading ? 
+                <Button disabled={loading === true} text={loading ? 
                     <Bars heigth="50" width="50" color="#e5e5e5" ariaLabel="loading-indicator" /> : 'Cadastrar'} />
             </form>
             <Link to="/" style={{ textDecoration: 'none' }}>

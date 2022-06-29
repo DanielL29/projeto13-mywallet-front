@@ -8,7 +8,7 @@ export function UserProvider({ children }) {
 
     if(currentUser.token !== undefined) {
         localStorage.setItem("currentUser", JSON.stringify(currentUser))
-    } else if (localStorage.getItem("user") !== null) {
+    } else if (localStorage.getItem("currentUser") !== null) {
         if(!userAuth.name && !userAuth.email && !userAuth.token) {
             localStorage.clear()
         } else {
