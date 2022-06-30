@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'https://projeto13-mywallet-backend-dan.herokuapp.com'
 
 const config = (user) => {
     return {
