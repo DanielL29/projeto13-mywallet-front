@@ -4,9 +4,10 @@ import { SignUpWrapper } from "../sign-up/SignUpStyle";
 import { Link, useNavigate } from 'react-router-dom';
 import { Bars } from 'react-loader-spinner';
 import { useContext, useState } from "react";
-import axios from 'axios'
 import UserContext from "../../../contexts/UserContext";
-import { BASE_URL } from "../../../mock/data";
+import { changeObject, errorOrNothing } from '../../../functions/global';
+import { signIn } from "../../../functions/auth";
+import { ToastContainer } from 'react-toastify';
 
 export default function SignIn() {
     const [user, setUser] = useState({ email: '', password: '' })
@@ -15,59 +16,30 @@ export default function SignIn() {
     const navigate = useNavigate()
     const { setCurrentUser } = useContext(UserContext)
 
-    const changingUser = (e) => setUser({ ...user, [e.target.name]: e.target.value })
-
-    async function signIn(e) {
-        e.preventDefault()
-        setErrors([])
-
-        try {
-            setLoading(true)
-
-            const userData = await axios.post(`${BASE_URL}/sign-in`, user)
-            localStorage.setItem('currentUser', JSON.stringify(userData.data))
-            
-            setCurrentUser(userData.data)
-            setLoading(false)
-            navigate('/home')
-        } catch(err) {
-            if(err.response.data.details) {
-                setErrors(err.response.data.details)
-                setLoading(false)
-            } else if(err.response.data) {
-                 alert(err.response.data)
-                 setLoading(false)
-            } else {
-                alert(err.message)
-                setLoading(false)
-            }
-        }
-    }
-
-    function findError(key) {
-        const errorFounded = errors.find(erro => erro.context.key === key)
-
-        return (
-            <h2>{errorFounded !== undefined ? errorFounded.message : ''}</h2>
+    function callSignIn(e) {
+        return signIn(
+            e, user, setCurrentUser, 
+            setErrors, setLoading, navigate
         )
     }
 
     return (
         <SignUpWrapper>
             <h1>MyWallet</h1>
-            <form onSubmit={signIn}>
+            <form onSubmit={callSignIn}>
                 <Input type="email" text="E-mail" name="email"
-                    onChange={(e) => changingUser(e)} disabled={loading === true} />
-                {errors.length > 0 ? findError('email') : ''}
+                    onChange={(e) => changeObject(e, user, setUser)} disabled={loading === true} />
+                {errorOrNothing('email', errors)}
                 <Input type="password" text="Senha" name="password"
-                    onChange={(e) => changingUser(e)} disabled={loading === true} />
-                {errors.length > 0 ? findError('password') : ''}
+                    onChange={(e) => changeObject(e, user, setUser)} disabled={loading === true} />
+                {errorOrNothing('password', errors)}
                 <Button disabled={loading === true} text={loading ?
                     <Bars heigth="50" width="50" color="#e5e5e5" ariaLabel="loading-indicator" /> : 'Entrar'} />
             </form>
             <Link to="/sign-up" style={{ textDecoration: 'none' }}>
                 <p>Primeira vez? Cadastre-se!</p>
             </Link>
+            <ToastContainer />
         </SignUpWrapper>
     )
 }

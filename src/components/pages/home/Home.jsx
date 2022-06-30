@@ -1,77 +1,73 @@
 import { HomeWrapper, RecordsWrapper, NewRecordButtons } from "./HomeStyle";
-import remove from '../../../assets/images/remove.svg';
 import { useContext, useEffect, useState } from "react";
-import axios from 'axios';
 import UserContext from '../../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL, config } from "../../../mock/data";
 import Record from './Record'
+import { getRecords, logout, sendRecordType } from "../../../functions/home";
+import { IoLogOutOutline, IoAddCircleOutline, IoRemoveCircleOutline } from 'react-icons/io5'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function Home() {
     const [records, setRecords] = useState([])
     const [balance, setBalance] = useState(null)
+    const [loading, setLoading] = useState(false)
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const navigate = useNavigate()
 
+    const balanceFormatted = Number(balance).toFixed(2).toString().replace('.', ',')
+    const balanceStatus = Number(balance) < 0 ? 'red' : 'green'
+
     useEffect(() => {
-        getRecords()
+        getRecords(currentUser, setRecords, setBalance, setLoading)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    async function getRecords() {
-        try {
-            const recordsData = await axios.get(`${BASE_URL}/records`, config(currentUser))
-            setRecords(recordsData.data.records)
-            setBalance(recordsData.data.balance.sum)
-        } catch (err) {
-            if (err.response.data) alert(err.response.data)
-            else alert(err.message)
-        }
+    function renderRecords() {
+        if (records.length > 0) {
+            return (
+                <>
+                    <div className="records">
+                        {records.map(record =>
+                            <Record key={record._id}
+                                id={record._id}
+                                date={loading ? <Skeleton width={70} height={20} /> : record.date}
+                                description={loading ? <Skeleton width="99%" height={20} /> : record.description}
+                                price={loading ? <Skeleton width={70} height={20} /> : record.price}
+                                isIncrease={record.isIncrease}
+                                setRecords={setRecords}
+                                setBalance={setBalance}
+                                setLoading={setLoading}
+                            />
+                        )}
+                    </div>
+                    <div className="balance">
+                        <h1>SALDO</h1>
+                        <h2 className={balanceStatus}>{loading ? <Skeleton width={70} height={30} /> : balanceFormatted}</h2>
+                    </div>
+                </>
+            )
+        } else if(!loading && records.length === 0) {
+            return <div className="no-records">Não há registros de entrada ou saída</div>
+        } 
     }
-
-    function logout() {
-        localStorage.clear()
-        setCurrentUser({})
-        navigate('/')
-    }
-
-    const sendRecordType = (type) => navigate('/new-record', { state: { type } })
 
     return (
         <HomeWrapper>
             <div className="header">
                 <h1>Olá, {currentUser.name}</h1>
-                <ion-icon name="log-out-outline" onClick={logout}></ion-icon>
+                <IoLogOutOutline className="logout" onClick={() => logout(setCurrentUser, navigate)} />
             </div>
             <RecordsWrapper>
-                {records.length > 0 ? (
-                    <>
-                        <div className="records">
-                            {records.map((record, i) =>
-                                <Record key={record._id}
-                                    id={record._id}
-                                    date={record.date}
-                                    description={record.description}
-                                    price={record.price}
-                                    isIncrease={record.isIncrease}
-                                    getRecords={getRecords}
-                                />
-                            )}
-                        </div>
-                        <div className="balance">
-                            <h1>SALDO</h1>
-                            <h2 className={Number(balance) < 0 ? 'red' : 'green'}>{Number(balance).toFixed(2).toString().replace('.', ',')}</h2>
-                        </div>
-                    </>
-                ) : <div className="no-records">Não há registros de entrada ou saída</div>}
+                {renderRecords()}
             </RecordsWrapper>
             <NewRecordButtons>
-                <div onClick={() => sendRecordType('entry')}>
-                    <ion-icon name="add-circle-outline"></ion-icon>
+                <div onClick={() => sendRecordType('entry', navigate)}>
+                    <IoAddCircleOutline className="new-record-icon" />
                     <h3>Nova entrada</h3>
                 </div>
-                <div onClick={() => sendRecordType('exit')}>
-                    <img src={remove} alt="remove" />
+                <div onClick={() => sendRecordType('exit', navigate)}>
+                    <IoRemoveCircleOutline className="new-record-icon" />
                     <h3>Nova saÍda</h3>
                 </div>
             </NewRecordButtons>

@@ -35,12 +35,12 @@ export const HomeWrapper = styled.div`
         text-align: center;
     }
 
-    ion-icon {
+    .logout {
         cursor: pointer;
         transition: all 300ms ease-in-out;
     }
 
-    ion-icon:hover {
+    .logout:hover {
         transform: scale(1.2);
     }
 
@@ -111,20 +111,13 @@ export const NewRecordButtons = styled.div`
         cursor: pointer;
     }
 
-    img {
-        cursor: pointer;
-        transition: all 300ms ease-in-out;
-        width: 22px;
-        height: 22px;
-    }
-
-    ion-icon {
+    .new-record-icon {
         cursor: pointer;
         transition: all 300ms ease-in-out;
         font-size: 23px;
     }
 
-    div:hover img, div:hover ion-icon {
+    div:hover img, div:hover .new-record-icon {
         transform: translateY(100%);
     }
 
@@ -159,14 +152,19 @@ export const RecordWrapper = styled.div`
         margin-right: 10px;
     }
 
-    ion-icon {
+    .close {
         color: #C6C6C6;
         font-size: 17px;
         transition: all 200ms ease-in-out;
+        cursor: pointer;
     }
 
-    ion-icon:hover {
+    .close:hover {
         transform: scale(1.3);
         filter: brightness(0.8);
+    }
+
+    .Toastify .Toastify__toast {
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
     }
 `
