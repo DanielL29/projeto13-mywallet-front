@@ -1,10 +1,14 @@
 import axios from 'axios'
-import { config } from '../mock/data'
+import { BASE_URL, config } from '../mock/data'
 import { errorToast, successToast } from './global'
 
-async function saveNewRecord(e, record, type, currentUser, navigate, setLoading, setErrors) {
+async function saveNewRecord(e, record, type, currentUser, navigate, setLoading, setErrors, id) {
     e.preventDefault()
     setErrors([])
+
+    const method = id === '' ? 'post' : 'put'
+    const saveType = id === '' ? 'registrada' : 'atualizada'
+    const message = type === 'entry' ? `Entrada ${saveType}!` : `Saida ${saveType}!`
 
     const recordObj = { 
         price: Number(record.price), 
@@ -15,10 +19,10 @@ async function saveNewRecord(e, record, type, currentUser, navigate, setLoading,
     try {
         setLoading(true)
 
-        await axios.post('http://localhost:5000/records', recordObj, config(currentUser))
+        await axios[method](`${BASE_URL}/records/${id}`, recordObj, config(currentUser))
         
         setLoading(false)
-        successToast(type === 'entry' ? 'Nova entrada registrada!' : 'Nova saida registrada!')
+        successToast(message)
         setTimeout(() => navigate('/home'), 2000)
     } catch (err) {
         if(err.response.data.details) {
@@ -34,4 +38,24 @@ async function saveNewRecord(e, record, type, currentUser, navigate, setLoading,
     }
 }
 
-export { saveNewRecord }
+function recordType(label, type) {
+    return type === 'entry' ? `${label} entrada` : `${label} saída`
+}
+
+function getLocation(isLocation, location, navigate, setType, setRecord) {
+    if(isLocation) {
+        navigate('/home')
+    } else {
+        if(location.state.record) {
+            setType(location.state.type)
+            setRecord({ 
+                price: Math.abs(location.state.record.price), 
+                description: location.state.record.description
+            })
+        } else {
+            setType(location.state.type)
+        }
+    }
+}
+
+export { saveNewRecord, recordType, getLocation }

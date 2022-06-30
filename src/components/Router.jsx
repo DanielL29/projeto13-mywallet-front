@@ -16,6 +16,7 @@ export default function Router() {
             <Route path='/sign-up' element={<SignUp />} />
             <Route path={userLogged ? '/home' : '*'} element={userLogged ? <Home /> : <Navigate to="/" replace />} />
             <Route path={userLogged ? '/new-record' : '*'} element={userLogged ? <NewRecord /> : <Navigate to="/" replace />} />
+            <Route path={userLogged ? '/new-record/:id' : '*'} element={userLogged ? <NewRecord /> : <Navigate to="/" replace />} />
         </Routes>
     )
 }

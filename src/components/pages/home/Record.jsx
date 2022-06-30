@@ -5,13 +5,15 @@ import { BASE_URL, config } from "../../../mock/data";
 import axios from 'axios';
 import UserContext from '../../../contexts/UserContext';
 import { useContext } from 'react';
-import { getRecords } from '../../../functions/home';
+import { getRecords, sendRecordType } from '../../../functions/home';
 import { successToast, errorToast } from '../../../functions/global'
 import { IoCloseOutline } from 'react-icons/io5'
 import { ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-export default function Record({ date, description, price, isIncrease, id, setRecords, setBalance, setLoading }) {
-    const priceFormatted = typeof price === 'number' ? Number(price).toFixed(2).toString().replace('-', '').replace('.', ',') : price
+export default function Record({ date, description, price, isIncrease, id, setRecords, setBalance, setLoading, record }) {
+    const navigate = useNavigate()
+    const priceFormatted = typeof price === 'number' ? Math.abs(price).toFixed(2).toString().replace('.', ',') : price
     const titleStyle = { fontSize: '25px', paddingBottom: '10px', fontWeight: 'bold' }
     const { currentUser } = useContext(UserContext)
     const title = <p style={titleStyle}>Excluir Registro</p>
@@ -42,7 +44,7 @@ export default function Record({ date, description, price, isIncrease, id, setRe
     return (
         <RecordWrapper>
             <span>{date}</span>
-            <p>{description}</p>
+            <p onClick={() => sendRecordType(isIncrease ? 'entry' : 'exit', navigate, record)}>{description}</p>
             <h2 className={isIncrease ? 'green' : 'red'}>{priceFormatted}</h2>
             <IoCloseOutline className='close' onClick={() => typeof price === 'number' ? deleteRecord(id) : () => false} />
             <ToastContainer />

@@ -8,7 +8,7 @@ import { Bars } from 'react-loader-spinner';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { changeObject, errorOrNothing } from '../../../functions/global'
-import { saveNewRecord } from '../../../functions/newRecord'
+import { getLocation, recordType, saveNewRecord } from '../../../functions/newRecord'
 
 export default function NewRecord() {
     const [type, setType] = useState('')
@@ -19,44 +19,34 @@ export default function NewRecord() {
     const location = useLocation()
     const navigate = useNavigate()
     const { currentUser } = useContext(UserContext)
+    const isLocation = location.state === null
 
     useEffect(() => {
-        isLocation()
+        getLocation(isLocation, location, navigate, setType, setRecord)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    function isLocation() {
-        if(location.state === null) {
-            navigate('/home')
-        } else {
-            setType(location.state.type)
-        }
-    }
 
     function callSendNewRecord(e) {
         return saveNewRecord(
             e, record, type, currentUser, 
-            navigate, setLoading, setErrors
+            navigate, setLoading, setErrors, 
+            !isLocation && !location.state.record ? '' : location.state.record._id
         )
-    }
-
-    function recordType(label) {
-        return type === 'entry' ? `${label} entrada` : `${label} saída`
     }
     
     return (
         <NewRecordWrapper>
-            <h1>{recordType('Nova')}</h1>
+            <h1>{recordType(!isLocation && !location.state.record ? 'Nova' : 'Editar', type)}</h1>
             <form onSubmit={callSendNewRecord}>
-                <Input type="number" step="0.01" text="Valor" name="price" 
+                <Input type="number" step="0.01" text="Valor" name="price" value={record.price} 
                     onChange={(e) => changeObject(e, record, setRecord)} disabled={loading} />
                 {errorOrNothing('price', errors)}
-                <Input type="text" text="Descrição" name="description" 
+                <Input type="text" text="Descrição" name="description" value={record.description} 
                     onChange={(e) => changeObject(e, record, setRecord)} disabled={loading} />
                 {errorOrNothing('description', errors)}
                 <Button disabled={loading} text={loading ? 
                     <Bars heigth="50" width="50" color="#e5e5e5" ariaLabel="loading-indicator" /> :
-                    recordType('Salvar')} 
+                    recordType(!isLocation && !location.state.record ? 'Salvar' : 'Atualizar', type)} 
                 />
             </form>
             <ToastContainer  />

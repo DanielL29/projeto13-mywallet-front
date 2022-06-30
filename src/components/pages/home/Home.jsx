@@ -2,11 +2,9 @@ import { HomeWrapper, RecordsWrapper, NewRecordButtons } from "./HomeStyle";
 import { useContext, useEffect, useState } from "react";
 import UserContext from '../../../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
-import Record from './Record'
 import { getRecords, logout, sendRecordType } from "../../../functions/home";
 import { IoLogOutOutline, IoAddCircleOutline, IoRemoveCircleOutline } from 'react-icons/io5'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import Records from "./Records";
 
 export default function Home() {
     const [records, setRecords] = useState([])
@@ -23,35 +21,6 @@ export default function Home() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    function renderRecords() {
-        if (records.length > 0) {
-            return (
-                <>
-                    <div className="records">
-                        {records.map(record =>
-                            <Record key={record._id}
-                                id={record._id}
-                                date={loading ? <Skeleton width={70} height={20} /> : record.date}
-                                description={loading ? <Skeleton width="99%" height={20} /> : record.description}
-                                price={loading ? <Skeleton width={70} height={20} /> : record.price}
-                                isIncrease={record.isIncrease}
-                                setRecords={setRecords}
-                                setBalance={setBalance}
-                                setLoading={setLoading}
-                            />
-                        )}
-                    </div>
-                    <div className="balance">
-                        <h1>SALDO</h1>
-                        <h2 className={balanceStatus}>{loading ? <Skeleton width={70} height={30} /> : balanceFormatted}</h2>
-                    </div>
-                </>
-            )
-        } else if(!loading && records.length === 0) {
-            return <div className="no-records">Não há registros de entrada ou saída</div>
-        } 
-    }
-
     return (
         <HomeWrapper>
             <div className="header">
@@ -59,7 +28,15 @@ export default function Home() {
                 <IoLogOutOutline className="logout" onClick={() => logout(setCurrentUser, navigate)} />
             </div>
             <RecordsWrapper>
-                {renderRecords()}
+                <Records 
+                    records={records} 
+                    balanceFormatted={balanceFormatted} 
+                    balanceStatus={balanceStatus} 
+                    loading={loading} 
+                    setBalance={setBalance} 
+                    setLoading={setLoading} 
+                    setRecords={setRecords} 
+                />
             </RecordsWrapper>
             <NewRecordButtons>
                 <div onClick={() => sendRecordType('entry', navigate)}>

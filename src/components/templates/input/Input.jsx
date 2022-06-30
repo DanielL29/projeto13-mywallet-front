@@ -1,6 +1,6 @@
 import { InputWrapper } from "./InputStyle"
 
-export default function Input({ type, text, onChange, name, disabled, step }) {
+export default function Input({ type, text, onChange, name, disabled, step, value }) {
     return (
         <InputWrapper 
             type={type} 
@@ -9,6 +9,7 @@ export default function Input({ type, text, onChange, name, disabled, step }) {
             onChange={(e) => onChange(e)} 
             disabled={disabled}
             step={step}
+            value={value}
             required
         />
     )

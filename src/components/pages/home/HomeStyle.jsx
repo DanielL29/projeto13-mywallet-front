@@ -146,6 +146,7 @@ export const RecordWrapper = styled.div`
         flex: 1;
         word-wrap: break-word;
         margin-right: 5px;
+        cursor: pointer;
     }
     
     h2 {

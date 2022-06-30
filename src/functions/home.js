@@ -23,8 +23,9 @@ function logout(setCurrentUser, navigate) {
     navigate('/')
 }
 
-function sendRecordType(type, navigate) {
-    navigate('/new-record', { state: { type } })
+function sendRecordType(type, navigate, record) {
+    navigate(`/new-record/${record ? record._id : ''}`, 
+    { state: record ? { type, record } : { type } })
 } 
 
 export { getRecords, logout, sendRecordType }
