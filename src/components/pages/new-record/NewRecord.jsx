@@ -18,7 +18,7 @@ export default function NewRecord() {
 
     const location = useLocation()
     const navigate = useNavigate()
-    const { currentUser } = useContext(UserContext)
+    const { currentUser, setCurrentUser } = useContext(UserContext)
     const isLocation = location.state === null
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function NewRecord() {
 
     function callSendNewRecord(e) {
         return saveNewRecord(
-            e, record, type, currentUser, 
+            e, record, type, currentUser, setCurrentUser,
             navigate, setLoading, setErrors, 
             !isLocation && !location.state.record ? '' : location.state.record._id
         )

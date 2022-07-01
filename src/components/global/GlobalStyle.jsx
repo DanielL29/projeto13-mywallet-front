@@ -58,5 +58,11 @@ export const GlobalStyle = createGlobalStyle`
     .green {
         color: #03AC00;
     }
+
+    @media screen and (max-width: 500px) {
+        .react-confirm-alert-body {
+            width: 200px;
+        }
+    }
 `
 

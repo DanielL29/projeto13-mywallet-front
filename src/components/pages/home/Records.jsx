@@ -27,7 +27,7 @@ export default function Records({ records, loading, setRecords, setBalance, setL
                 </div>
             </>
         )
-    } else if(!loading && records.length === 0) {
+    } else if(records.length === 0) {
         return <div className="no-records">Não há registros de entrada ou saída</div>
     } 
 }

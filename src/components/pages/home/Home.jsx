@@ -17,7 +17,7 @@ export default function Home() {
     const balanceStatus = Number(balance) < 0 ? 'red' : 'green'
 
     useEffect(() => {
-        getRecords(currentUser, setRecords, setBalance, setLoading)
+        getRecords(currentUser, setCurrentUser, setRecords, setBalance, setLoading, navigate)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

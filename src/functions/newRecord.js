@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { BASE_URL, config } from '../mock/data'
 import { errorToast, successToast } from './global'
+import { logout } from './home'
 
-async function saveNewRecord(e, record, type, currentUser, navigate, setLoading, setErrors, id) {
+async function saveNewRecord(e, record, type, currentUser, setCurrentUser, navigate, setLoading, setErrors, id) {
     e.preventDefault()
     setErrors([])
 
@@ -19,7 +20,7 @@ async function saveNewRecord(e, record, type, currentUser, navigate, setLoading,
     try {
         setLoading(true)
 
-        await axios[method](`${BASE_URL}/records/${id}`, recordObj, config(currentUser))
+        await axios[method](`${BASE_URL}/wallet/records/${id}`, recordObj, config(currentUser))
         
         setLoading(false)
         successToast(message)
@@ -29,8 +30,13 @@ async function saveNewRecord(e, record, type, currentUser, navigate, setLoading,
             setErrors(err.response.data.details)
             setLoading(false)
         } else if(err.response.data) {
-             errorToast(err.response.data)
-             setLoading(false)
+            if(err.response.status === 401) {
+                errorToast(err.response.data)
+                setTimeout(() => logout(setCurrentUser, navigate), 1000)
+            } else {
+                errorToast(err.response.data)
+                setLoading(false)
+            }
         } else {
             errorToast(err.message)
             setLoading(false)

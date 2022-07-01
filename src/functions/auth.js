@@ -9,7 +9,7 @@ async function signUp(e, user, setErrors, setLoading, navigate) {
     try {
         setLoading(true)
 
-        await axios.post(`${BASE_URL}/sign-up`, user)
+        await axios.post(`${BASE_URL}/auth/sign-up`, user)
         
         setLoading(false)
         successToast('Usuario cadastrado!')
@@ -35,7 +35,7 @@ async function signIn(e, user, setCurrentUser, setErrors, setLoading, navigate) 
     try {
         setLoading(true)
 
-        const userData = await axios.post(`${BASE_URL}/sign-in`, user)
+        const userData = await axios.post(`${BASE_URL}/auth/sign-in`, user)
         localStorage.setItem('currentUser', JSON.stringify(userData.data))
         
         setLoading(false)
