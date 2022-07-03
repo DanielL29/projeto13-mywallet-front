@@ -8,6 +8,7 @@ async function signUp(e, user, setErrors, setLoading, navigate) {
 
     try {
         setLoading(true)
+        user.email = user.email.toLowerCase()
 
         await axios.post(`${BASE_URL}/auth/sign-up`, user)
         
@@ -34,6 +35,7 @@ async function signIn(e, user, setCurrentUser, setErrors, setLoading, navigate) 
 
     try {
         setLoading(true)
+        user.email = user.email.toLowerCase()
 
         const userData = await axios.post(`${BASE_URL}/auth/sign-in`, user)
         localStorage.setItem('currentUser', JSON.stringify(userData.data))

@@ -31,8 +31,8 @@ async function saveNewRecord(e, record, type, currentUser, setCurrentUser, navig
             setLoading(false)
         } else if(err.response.data) {
             if(err.response.status === 401) {
-                errorToast(err.response.data)
-                setTimeout(() => logout(setCurrentUser, navigate), 1000)
+                errorToast('sessão expirada')
+                setTimeout(() => logout(setCurrentUser, navigate), 1500)
             } else {
                 errorToast(err.response.data)
                 setLoading(false)

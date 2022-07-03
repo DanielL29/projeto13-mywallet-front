@@ -14,8 +14,8 @@ async function getRecords(currentUser, setCurrentUser, setRecords, setBalance, s
     } catch (err) {
         if (err.response.data) {
             if(err.response.status === 401) {
-                errorToast(err.response.data)
-                setTimeout(() => logout(setCurrentUser, navigate), 1000)
+                errorToast('sessão expirada')
+                setTimeout(() => logout(setCurrentUser, navigate), 1500)
             } else {
                 errorToast(err.response.data)
             }
@@ -35,8 +35,8 @@ async function deleteRecord(id, currentUser, setCurrentUser, setRecords, setBala
     } catch (err) {
         if (err.response.data) {
             if(err.response.status === 401) {
-                errorToast(err.response.data)
-                setTimeout(() => logout(setCurrentUser, navigate), 1000)
+                errorToast('sessão expirada')
+                setTimeout(() => logout(setCurrentUser, navigate), 1500)
             } else {
                 errorToast(err.response.data)
             }

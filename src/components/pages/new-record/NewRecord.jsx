@@ -38,7 +38,7 @@ export default function NewRecord() {
         <NewRecordWrapper>
             <h1>{recordType(!isLocation && !location.state.record ? 'Nova' : 'Editar', type)}</h1>
             <form onSubmit={callSendNewRecord}>
-                <Input type="number" step="0.01" text="Valor" name="price" value={record.price} 
+                <Input type="number" step="0.01" min="1" text="Valor" name="price" value={record.price} 
                     onChange={(e) => changeObject(e, record, setRecord)} disabled={loading} />
                 {errorOrNothing('price', errors)}
                 <Input type="text" text="Descrição" name="description" value={record.description} 
