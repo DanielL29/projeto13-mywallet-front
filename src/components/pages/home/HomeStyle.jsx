@@ -145,12 +145,17 @@ export const RecordWrapper = styled.div`
     p {
         flex: 1;
         word-wrap: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 50%;
         margin-right: 5px;
         cursor: pointer;
     }
     
     h2 {
         margin-right: 10px;
+        word-wrap: break-word;
     }
 
     .close {
